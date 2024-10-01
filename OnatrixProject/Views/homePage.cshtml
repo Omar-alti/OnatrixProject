@@ -1,0 +1,220 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+	Layout = "mainLayout.cshtml";
+	ViewBag.Title = Model?.Value("pageTitle") ?? null;
+
+	var backgroundImage = Model?.Value<IPublishedContent>("heroBackgroundImage")?.Url() ?? "";
+
+	var signatureImage = Model?.Value<IPublishedContent>("aboutSignatureImage")?.Url() ?? "";
+
+	var content = Umbraco.Content(Guid.Parse("115b1f33-e1df-4605-b675-84da3d53009a"));
+    var selection = Enumerable.Empty<IPublishedContent>();
+    
+    if (content != null)
+    {
+        selection = content.ChildrenOfType("serviceItemTemplate").Where(x => x.IsVisible());
+    }
+
+    var storyImage = Model?.Value<IPublishedContent>("storyImage")?.Url() ?? "";
+    var storyBackgroundDotImage = Model?.Value<IPublishedContent>("storyBackgroundDotImage")?.Url() ?? "";
+
+    var successImage = Model?.Value<IPublishedContent>("successImage")?.Url() ?? "";
+    var successDotbackgroundImg = Model?.Value<IPublishedContent>("successDotbackgroundImg")?.Url() ?? "";
+
+
+    var recentBoxOneImg = Model?.Value<IPublishedContent>("recentBoxOneImg")?.Url() ?? "";
+    var recentBoxTwoImage = Model?.Value<IPublishedContent>("recentBoxTwoImage")?.Url() ?? "";
+    var recentBoxThreeImg = Model?.Value<IPublishedContent>("recentBoxThreeImg")?.Url() ?? "";
+    var recentBoxFourImg = Model?.Value<IPublishedContent>("recentBoxFourImg")?.Url() ?? "";
+
+    var companyImageOne = Model?.Value<IPublishedContent>("companyImageOne")?.Url() ?? "";
+    var companyImageTwo = Model?.Value<IPublishedContent>("companyImageTwo")?.Url() ?? "";
+    var companyImageThree = Model?.Value<IPublishedContent>("companyImageThree")?.Url() ?? "";
+    var companyImageFour = Model?.Value<IPublishedContent>("companyImageFour")?.Url() ?? "";
+    var companyImageFive = Model?.Value<IPublishedContent>("companyImageFive")?.Url() ?? "";
+    var companyImageSix = Model?.Value<IPublishedContent>("companyImageSix")?.Url() ?? "";
+        
+}
+
+<section id="hero-section">
+	<img src="@backgroundImage">
+	<div class="container">
+		<div class="left-content">
+			<h1>@Model?.Value("heroHeadline")</h1>
+			<p>@Model?.Value("heroText")</p>
+			<a href="@Model?.Value("heroButtonUrl")" class="btn-primary">@Model?.Value("heroButtonText")</a>
+		</div>
+		<div class="right-content">
+
+		</div>
+	</div>
+</section>
+
+<section id="about-section">
+	<div class="container">
+		<div class="left-side">
+			<h6>@Model.Value("aboutSectionTitle")</h6>
+			<h2>@Model.Value("aboutHeadline")</h2>
+			<p>@Model.Value("aboutQuote")</p>
+			<p>@Model.Value("aboutText")</p>
+			<img src="@signatureImage">
+			<p>@Model.Value("aboutSignature")</p>
+		</div>
+		<div class="right-side">
+            <form action="" novalidate>
+                <div class="headline bg-primary">
+                    <h3>Request a call back</h3>
+                </div>
+                <div class="request-inputs">
+                    <p>Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat</p>
+                    <input placeholder="Name">
+                    <input placeholder="Email address">
+                    <input placeholder="Phone">
+                    <input placeholder="Financial consulting">
+                    <button class="btn-gray">Submit</button>
+                </div>
+            </form>
+		</div>
+	</div>
+</section>
+
+<section id="services-section" class="bg-gray">
+	<div class="container">
+		<div class="headline">
+			<h6>@Model.Value("servicesSectionTitle")</h6>
+			<h2>@Model.Value("servicesSectionHeadline")</h2>
+		</div>
+
+		<div class="articles">
+			@foreach (var item in selection) {
+				var image = item?.Value<IPublishedContent>("thumbnailImage")?.Url() ?? "";
+				var preamble = item?.Value<string>("preamble") ?? "";
+
+				<a href="@item.Url()">
+					<div class="box bg-light">
+						<h5>@item.Name</h5>
+						<img src="@image" alt="@item.Name">
+						<p>@preamble</p>
+					</div>
+				</a>
+			}
+		</div>
+	</div>
+</section>
+
+<section id="story-section">
+    <div class="container">
+        <img id="dot-image" src="@storyBackgroundDotImage" alt="">
+        <div class="content">
+            <h2>@Model.Value("storyHeadline")</h2>
+            <p>@Model.Value("storyText")</p>
+            <a href="@Model.Value("storyButtonUrl")" class="btn-primary">@Model.Value("storyButtonText")</a>
+            <img id="group-img" src="@storyImage">
+        </div>
+    </div>
+</section>
+
+<section id="success-section" class="bg-primary">
+    <div class="container">
+        <img id="dot-image2" src="@successDotbackgroundImg">
+        <div class="content">
+            <h6>@Model.Value("successSectionTitle")</h6>
+            <h2>@Model.Value("successHeadline")</h2>
+            <div class="numbers">
+                <div>
+                    <h1>@Model.Value("successBoxOneNumber")</h1>
+                    <p>@Model.Value("successBoxOneText")</p>
+                </div>
+                <div>
+                    <h1>@Model.Value("successBoxTwoNumber")</h1>
+                    <p>@Model.Value("successBoxTwoText")</p>
+                </div>
+                <div>
+                    <h1>@Model.Value("successBoxThreeNumber")</h1>
+                    <p>@Model.Value("successBoxThreeText")</p>
+                </div>
+            </div>
+            <img id="success-image" src="@successImage" alt="">
+        </div>
+    </div>
+</section>
+
+<section id="recent-section">
+    <div class="container">
+        <div class="headline">
+            <h6>@Model.Value("recentSectionTitle")</h6>
+            <h2>@Model.Value("recentHeadline")</h2>
+        </div>
+    </div>
+
+    <div class="recent-articles">
+        <div class="recent-box">
+            <img src="@recentBoxOneImg" alt="">
+            <div class="recent-text">
+                <a href="/projects/annual-report-for-juva-inc/">
+                    <div class="txt">
+                        <h5>@Model.Value("recentBoxOneH5")</h5>
+                        <p>@Model.Value("recentBoxOneText")</p>
+                    </div>
+                    <div class="icn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="recent-box">
+            <img src="@recentBoxTwoImage" alt="">
+            <div class="recent-text">
+                <a href="/projects/business-insights-for-sp-group-inc/">
+                    <div class="txt">
+                        <h5>@Model.Value("recentBoxTwoh5")</h5>
+                        <p>@Model.Value("recentBoxTwoText")</p>
+                    </div>
+                    <div class="icn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="recent-box">
+            <img src="@recentBoxThreeImg" alt="">
+            <div class="recent-text">
+                <a href="/projects/financial-advisors-to-irra-corp-inc/">
+                    <div class="txt">
+                        <h5>@Model.Value("recentBoxThreeH5")</h5>
+                        <p>@Model.Value("recentBoxThreeText")</p>
+                    </div>
+                    <div class="icn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="recent-box">
+            <img src="@recentBoxFourImg" alt="">
+            <div class="recent-text">
+                <a href="/projects/budget-planning-for-buccura-inc/">
+                    <div class="txt">
+                        <h5>@Model.Value("recentBoxFourH5")</h5>
+                        <p>@Model.Value("recentBoxFourText")</p>
+                    </div>
+                    <div class="icn">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="company-section">
+    <div class="container">
+        <img src="@companyImageOne" alt="">
+        <img src="@companyImageTwo" alt="">
+        <img src="@companyImageThree" alt="">
+        <img src="@companyImageFour" alt="">
+        <img src="@companyImageFive" alt="">
+        <img src="@companyImageSix" alt="">
+    </div>
+</section>

@@ -1,0 +1,54 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject Umbraco.Cms.Web.Common.UmbracoHelper UmbracoHelper
+@{
+	Layout = "mainLayout.cshtml";
+	ViewBag.Title = Model?.Value("pageTitle")?.ToString() ?? null;
+
+    var content = Umbraco.Content(Guid.Parse("115b1f33-e1df-4605-b675-84da3d53009a"));
+    var selection = Enumerable.Empty<IPublishedContent>();
+    
+    if (content != null)
+    {
+        selection = content.ChildrenOfType("serviceItemTemplate").Where(x => x.IsVisible());
+    }
+
+    var manImage = Model?.Value<IPublishedContent>("servicesNextProjectImg")?.Url() ?? "";
+
+    var rootContents = UmbracoHelper.ContentAtRoot();
+    var settings = rootContents?.FirstOrDefault(x => x.ContentType.Alias == "settingsPage") ?? null;
+    var officeLocation = settings?.Value<string>("officeLocation") ?? "";
+    var officePhone = settings?.Value<string>("officePhone") ?? "";
+    var officeEmailAddress = settings?.Value<string>("officeEmailAddress") ?? "";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Title))
+{
+    @await Html.PartialAsync("partials/static/breadcrumb.cshtml")
+}
+
+<section id="services-section">
+	<div class="container">
+		<div class="headline">
+			<h6>@Model.Value("servicesSectionTitle")</h6>
+			<h2>@Model.Value("servicesSectionHeadline")</h2>
+		</div>
+
+		<div class="articles">
+			@foreach (var item in selection) {
+				var image = item?.Value<IPublishedContent>("thumbnailImage")?.Url() ?? "";
+				var preamble = item?.Value<string>("preamble") ?? "";
+
+				<a href="@item.Url()">
+					<div class="box bg-light" style="border: 1px solid #F7F7F7;">
+						<h5>@item.Name</h5>
+						<img src="@image" alt="@item.Name">
+						<p>@preamble</p>
+					</div>
+				</a>
+			}
+		</div>
+	</div>
+</section>
+
+@await Html.PartialAsync("partials/static/nextprojectsection.cshtml")

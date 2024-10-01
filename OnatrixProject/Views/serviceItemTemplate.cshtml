@@ -1,0 +1,59 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject Umbraco.Cms.Web.Common.UmbracoHelper UmbracoHelper
+@{
+	Layout = "mainLayout.cshtml";
+    ViewBag.Title = Model.Name;
+
+    var manImage = Model?.Value<IPublishedContent>("singleServiceImage")?.Url() ?? "";
+
+    var rootContents = UmbracoHelper.ContentAtRoot();
+    var settings = rootContents?.FirstOrDefault(x => x.ContentType.Alias == "settingsPage") ?? null;
+    var officeLocation = settings?.Value<string>("officeLocation") ?? "";
+    var officePhone = settings?.Value<string>("officePhone") ?? "";
+    var officeEmailAddress = settings?.Value<string>("officeEmailAddress") ?? "";
+
+    var howCanWeHelpImg = Model?.Value<IPublishedContent>("howCanWeHelpImg")?.Url() ?? "";
+}
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Title))
+{
+    @await Html.PartialAsync("partials/static/breadcrumb.cshtml")
+}
+
+<section id="single-page-service">
+    <div class="container">
+        <div class="left-bar">
+            <h5>About us</h5>
+            <img src="@howCanWeHelpImg">
+            <p>Dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non</p>
+            <div class="left-bar-box">
+                <h5>How can we help you?</h5>
+                <p>online support 24/7, we are here to help you</p>
+                <input type="email" placeholder="E-mail address">
+            </div>
+        </div>
+        <div class="right-bar">
+            @Model.Value("pageContent")
+        </div>
+    </div>
+</section>
+
+<section id="have-a-question">
+    <div class="container">
+        <form action="">
+            <div class="question-headline">
+                <h3>Have a question ?</h3>
+            </div>
+            <div class="question-inputs">
+                <input placeholder="Name" class="name-input">
+                <input placeholder="Email" class="email-input">
+                <textarea placeholder="Question" class="q-input"></textarea>
+            </div>
+            <button class="btn-primary">Submit</button>
+        </form>
+    </div>
+</section>
+
+@await Html.PartialAsync("partials/static/nextprojectsection.cshtml")
